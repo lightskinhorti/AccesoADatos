@@ -1,0 +1,20 @@
+[
+    {
+        "nombre": "Javier",
+        "apellidos": "Hortigüela Valiente",
+        "edad": 46,
+        "emails": [
+            {
+                "tipo": "personal",
+                "valor": "info@horti.com"
+            },
+            {
+                "tipo": "trabajo",
+                "valor": [
+                    "info@horti.com",
+                    "horti2@gmail.com"
+                ]
+            }
+        ]
+    }
+]
