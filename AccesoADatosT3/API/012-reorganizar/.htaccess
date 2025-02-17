@@ -1,0 +1,9 @@
+
+RewriteEngine On
+RewriteRule ^test$ api.php [L]
+
+# Rewrite endpoint for "clientes"
+RewriteRule ^clientes$ api.php?o=clientes [QSA,L]
+
+# Rewrite endpoint for "cliente"
+RewriteRule ^cliente/([0-9]+)$ api.php?o=cliente&id=$1 [QSA,L]  

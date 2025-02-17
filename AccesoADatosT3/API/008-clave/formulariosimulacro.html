@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insertar Cliente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .message {
+            margin-top: 16px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <form id="clienteForm" action="api.php?o=insertarCliente" method="POST">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" id="apellidos" name="apellidos" required>
+		<input type="hidden" name="clave" value="TfdoHwvcwfTcWT4zkv9vN7">
+
+        <input type="submit" value="Insertar Cliente">
+    </form>
+
+    <div id="message" class="message"></div>
+
+    <script>
+        document.getElementById('clienteForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Evitar el envío tradicional del formulario
+
+            // Obtener los datos del formulario
+            const formData = new FormData(this);
+
+            // Enviar los datos al servidor usando Fetch API
+            fetch(this.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const messageDiv = document.getElementById('message');
+                if (data.resultado === 'ok') {
+                    messageDiv.textContent = data.mensaje;
+                    messageDiv.className = 'message success';
+                } else {
+                    messageDiv.textContent = data.mensaje;
+                    messageDiv.className = 'message error';
+                }
+                messageDiv.style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const messageDiv = document.getElementById('message');
+                messageDiv.textContent = 'Error al enviar el formulario';
+                messageDiv.className = 'message error';
+                messageDiv.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>	
