@@ -1,0 +1,67 @@
+[
+    {
+        "name": "2025-02-11 20-57-51.mkv",
+        "path": "C:\\Users\\jhortiguela\\Videos\\2025-02-11 20-57-51.mkv",
+        "type": "file",
+        "size": 41112476
+    },
+    {
+        "name": "2025-02-12 19-49-08.mkv",
+        "path": "C:\\Users\\jhortiguela\\Videos\\2025-02-12 19-49-08.mkv",
+        "type": "file",
+        "size": 63923785
+    },
+    {
+        "name": "2025-02-17 18-30-21.mkv",
+        "path": "C:\\Users\\jhortiguela\\Videos\\2025-02-17 18-30-21.mkv",
+        "type": "file",
+        "size": 7803897
+    },
+    {
+        "name": "2025-02-17 21-43-43.mkv",
+        "path": "C:\\Users\\jhortiguela\\Videos\\2025-02-17 21-43-43.mkv",
+        "type": "file",
+        "size": 38923719
+    },
+    {
+        "name": "2025-02-18 16-44-42.mkv",
+        "path": "C:\\Users\\jhortiguela\\Videos\\2025-02-18 16-44-42.mkv",
+        "type": "file",
+        "size": 4358144
+    },
+    {
+        "name": "AnyDesk",
+        "path": "C:\\Users\\jhortiguela\\Videos\\AnyDesk",
+        "type": "directory",
+        "size": 0,
+        "contents": [
+            {
+                "name": "screen recordings",
+                "path": "C:\\Users\\jhortiguela\\Videos\\AnyDesk\\screen recordings",
+                "type": "directory",
+                "size": 0,
+                "contents": []
+            }
+        ]
+    },
+    {
+        "name": "Captures",
+        "path": "C:\\Users\\jhortiguela\\Videos\\Captures",
+        "type": "directory",
+        "size": 190,
+        "contents": [
+            {
+                "name": "desktop.ini",
+                "path": "C:\\Users\\jhortiguela\\Videos\\Captures\\desktop.ini",
+                "type": "file",
+                "size": 190
+            }
+        ]
+    },
+    {
+        "name": "desktop.ini",
+        "path": "C:\\Users\\jhortiguela\\Videos\\desktop.ini",
+        "type": "file",
+        "size": 504
+    }
+]

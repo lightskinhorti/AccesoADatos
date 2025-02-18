@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<root>
+  <staticData>
+    <name>fresas</name>
+    <category>temporada</category>
+    <price>2</price>
+    <stock>999</stock>
+  </staticData>
+  <dynamicData/>
+</root>

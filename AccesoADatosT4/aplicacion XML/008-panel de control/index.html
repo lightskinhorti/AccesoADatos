@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilo.css"> <!-- Enlace a la hoja de estilos externa -->
+    <title>Dynamic Form</title>
+    
+    <!-- Estilos internos para mejorar el diseño del formulario -->
+    <style>
+        .dynamic-group { margin-bottom: 15px; } /* Espaciado entre grupos dinámicos */
+        .dynamic-line { display: flex; gap: 10px; margin-bottom: 10px; } /* Diseño en línea para los inputs dinámicos */
+        .dynamic-line input { flex: 1; } /* Los inputs ocupan todo el espacio disponible */
+        .add-line-btn { margin: 10px 0; } /* Margen para el botón de agregar línea */
+        .remove-line-btn { margin-left: 10px; } /* Espaciado para el botón de eliminar línea */
+    </style>
+</head>
+<body>
+
+    <!-- Formulario dinámico -->
+    <form id="dynamicForm">
+        <div id="staticFields"></div> <!-- Contenedor para los campos estáticos -->
+        <div id="dynamicFieldsContainer"></div> <!-- Contenedor para los campos dinámicos -->
+        <button type="submit">Submit Form</button> <!-- Botón de envío -->
+    </form>
+
+    <script>
+        // Espera a que el DOM esté completamente cargado
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search); // Obtiene los parámetros de la URL
+            const formContainer = document.getElementById('dynamicForm');
+            const staticFieldsContainer = document.getElementById('staticFields');
+            const dynamicFieldsContainer = document.getElementById('dynamicFieldsContainer');
+
+            try {
+                // Construye la URL del archivo XML basado en el parámetro 'f'
+                const xmlFile = 'modelos/' + urlParams.get('f') + '.xml';
+                console.log('Fetching:', xmlFile); // Mensaje de depuración
+
+                const response = await fetch(xmlFile); // Carga el archivo XML
+                if (!response.ok) throw new Error(`Error loading XML: ${response.status}`);
+
+                const xmlText = await response.text(); // Convierte la respuesta a texto
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(xmlText, 'application/xml');
+
+                // Verifica si hay errores en la estructura del XML
+                if (xml.querySelector('parsererror')) throw new Error('Invalid XML format');
+
+                // Obtiene y renderiza los campos estáticos
+                const staticFields = xml.querySelectorAll('fields > field');
+                if (staticFields.length > 0) {
+                    staticFields.forEach(field => renderField(field, staticFieldsContainer));
+                } else {
+                    console.warn('No static fields found in XML');
+                }
+
+                // Obtiene y renderiza los grupos de campos dinámicos
+                const dynamicFieldGroups = xml.querySelectorAll('dynamicFields > fieldGroup');
+                if (dynamicFieldGroups.length > 0) {
+                    dynamicFieldGroups.forEach(fieldGroup => renderDynamicFieldGroup(fieldGroup, dynamicFieldsContainer));
+                } else {
+                    console.warn('No dynamic fields found in XML');
+                }
+
+                // Manejo del envío del formulario
+                formContainer.addEventListener('submit', async (event) => {
+                    event.preventDefault(); // Evita el envío tradicional del formulario
+
+                    // Recolecta los valores de los campos estáticos
+                    const staticData = {};
+                    staticFields.forEach(field => {
+                        const name = field.querySelector('name')?.textContent;
+                        if (name) {
+                            const input = document.querySelector(`[name="${name}"]`);
+                            staticData[name] = input ? input.value : '';
+                        }
+                    });
+
+                    // Recolecta los valores de los campos dinámicos
+                    const dynamicData = [];
+                    dynamicFieldsContainer.querySelectorAll('.dynamic-group').forEach(group => {
+                        const groupData = Array.from(group.querySelectorAll('.dynamic-line')).map(line => {
+                            const lineData = {};
+                            line.querySelectorAll('input').forEach(input => {
+                                lineData[input.name] = input.value;
+                            });
+                            return lineData;
+                        });
+                        dynamicData.push(groupData);
+                    });
+
+                    const formData = { staticData, dynamicData };
+
+                    try {
+                        // Envía los datos a `guardaxml.php`
+                        const response = await fetch('guardaxml.php?f=' + urlParams.get('f'), {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(formData),
+                        });
+
+                        const result = await response.text();
+                        console.log(result);
+                        alert('Form submitted successfully!');
+                        localStorage.removeItem('formTempData'); // Limpia los datos temporales
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred while submitting the form.');
+                    }
+                });
+            } catch (error) {
+                console.error(error.message);
+            }
+
+            // Función para crear campos estáticos
+            function renderField(field, container) {
+                const name = field.querySelector('name')?.textContent;
+                const type = field.querySelector('type')?.textContent || 'text';
+                const placeholder = field.querySelector('placeholder')?.textContent || '';
+                const required = field.querySelector('required')?.textContent === 'true';
+
+                if (!name) return; // Evita errores si falta el nombre
+
+                const input = document.createElement('input');
+                input.type = type;
+                input.name = name;
+                input.placeholder = placeholder;
+                input.required = required;
+                container.appendChild(input);
+                container.appendChild(document.createElement('br')); // Salto de línea
+            }
+
+            // Función para crear grupos de campos dinámicos
+            function renderDynamicFieldGroup(fieldGroup, container) {
+                const groupName = fieldGroup.getAttribute('name');
+                const fields = Array.from(fieldGroup.querySelectorAll('field'));
+
+                if (!groupName || fields.length === 0) return;
+
+                const groupContainer = document.createElement('div');
+                groupContainer.classList.add('dynamic-group');
+                container.appendChild(groupContainer);
+
+                const addLineButton = document.createElement('button');
+                addLineButton.type = 'button';
+                addLineButton.textContent = `+ Add ${groupName}`;
+                addLineButton.classList.add('add-line-btn');
+                container.appendChild(addLineButton);
+
+                function renderDynamicLine() {
+                    const line = document.createElement('div');
+                    line.classList.add('dynamic-line');
+
+                    fields.forEach(field => {
+                        const name = field.querySelector('name')?.textContent;
+                        const type = field.querySelector('type')?.textContent || 'text';
+                        const placeholder = field.querySelector('placeholder')?.textContent || '';
+                        const required = field.querySelector('required')?.textContent === 'true';
+
+                        if (!name) return;
+
+                        const input = document.createElement('input');
+                        input.type = type;
+                        input.name = `${groupName}[][${name}]`;
+                        input.placeholder = placeholder;
+                        input.required = required;
+                        line.appendChild(input);
+                    });
+
+                    const removeButton = document.createElement('button');
+                    removeButton.type = 'button';
+                    removeButton.textContent = '-';
+                    removeButton.classList.add('remove-line-btn');
+                    removeButton.addEventListener('click', () => groupContainer.removeChild(line));
+                    line.appendChild(removeButton);
+
+                    groupContainer.appendChild(line);
+                }
+
+                addLineButton.addEventListener('click', renderDynamicLine);
+                renderDynamicLine(); // Renderiza la primera línea por defecto
+            }
+        });
+    </script>
+
+</body>
+</html>

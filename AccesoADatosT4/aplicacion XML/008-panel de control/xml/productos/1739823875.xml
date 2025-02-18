@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<root>
+  <staticData>
+    <name>hola</name>
+    <category>p</category>
+    <price>10</price>
+    <stock>999</stock>
+  </staticData>
+  <dynamicData/>
+</root>

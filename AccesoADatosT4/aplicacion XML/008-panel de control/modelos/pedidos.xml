@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<purchaseOrderModel>
+    <fields>
+        <field>
+            <name>customerName</name>
+            <type>text</type>
+            <placeholder>Customer Name</placeholder>
+            <required>true</required>
+        </field>
+        <field>
+            <name>date</name>
+            <type>date</type>
+            <placeholder>YYYY-MM-DD</placeholder>
+            <required>true</required>
+        </field>
+    </fields>
+    <dynamicFields>
+        <fieldGroup name="product">
+            <field>
+                <name>name</name>
+                <type>text</type>
+                <placeholder>Product Name</placeholder>
+                <required>true</required>
+            </field>
+            <field>
+                <name>quantity</name>
+                <type>number</type>
+                <placeholder>Quantity</placeholder>
+                <required>true</required>
+            </field>
+            <field>
+                <name>price</name>
+                <type>number</type>
+                <placeholder>Price</placeholder>
+                <required>true</required>
+            </field>
+        </fieldGroup>
+    </dynamicFields>
+</purchaseOrderModel>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<productModel>
+    <fields>
+        <field>
+            <name>name</name>
+            <type>text</type>
+            <placeholder>Product Name</placeholder>
+            <required>true</required>
+        </field>
+        <field>
+            <name>category</name>
+            <type>text</type>
+            <placeholder>Category</placeholder>
+            <required>true</required>
+        </field>
+        <field>
+            <name>price</name>
+            <type>number</type>
+            <placeholder>Price</placeholder>
+            <required>true</required>
+        </field>
+        <field>
+            <name>stock</name>
+            <type>number</type>
+            <placeholder>Stock</placeholder>
+            <required>true</required>
+        </field>
+    </fields>
+</productModel>

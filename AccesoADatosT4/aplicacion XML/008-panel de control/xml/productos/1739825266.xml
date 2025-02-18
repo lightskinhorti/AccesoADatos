@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<root>
+  <staticData>
+    <name>Caja de carton</name>
+    <category>utilidaes</category>
+    <price>12</price>
+    <stock>999</stock>
+  </staticData>
+  <dynamicData/>
+</root>

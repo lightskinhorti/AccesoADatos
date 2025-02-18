@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<root>
+  <staticData>
+    <customerName>juan francisco</customerName>
+    <date>2025-02-12</date>
+  </staticData>
+  <dynamicData>
+    <item0/>
+  </dynamicData>
+</root>
